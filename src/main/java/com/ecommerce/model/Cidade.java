@@ -13,8 +13,10 @@ public class Cidade {
 
     private String nome;
 
-    @ManyToOne()
+    @ManyToOne
     private Estado estado;
+
+    public Cidade(){}
 
     public Cidade(String nome, Estado estado) {
         this.nome = nome;
