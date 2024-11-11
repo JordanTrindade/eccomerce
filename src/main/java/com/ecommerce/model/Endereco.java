@@ -1,6 +1,8 @@
 package com.ecommerce.model;
 
 import com.ecommerce.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +10,8 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    public Endereco(){}
 
     public Endereco(String logadouro, String numero, String complemento, String bairro, String cep, Cliente cliente, Cidade cidade) {
         this.logadouro = logadouro;
@@ -26,9 +30,11 @@ public class Endereco {
     private String cep;
 
     @ManyToOne
+    @JsonIgnore
     private Cliente cliente;
 
     @ManyToOne
+    @JsonIgnore
     private Cidade cidade;
 
     public Integer getId() {
