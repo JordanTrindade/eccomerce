@@ -21,7 +21,7 @@ public class Categoria {
             joinColumns = @JoinColumn(name = "categoria_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    @JsonManagedReference
+
     private List<Produto> produtos = new ArrayList<>();
     public Categoria() {
     }
