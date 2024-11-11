@@ -1,6 +1,7 @@
 package com.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Produto {
     private Double preco;
 
     @ManyToMany(mappedBy = "produtos", fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnore
     private List<Categoria> categorias = new ArrayList<>();
 
     public Produto() {}
