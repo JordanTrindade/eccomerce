@@ -1,10 +1,10 @@
 package com.ecommerce;
 
-import com.ecommerce.model.Categoria;
-import com.ecommerce.model.Cidade;
-import com.ecommerce.model.Estado;
-import com.ecommerce.model.Produto;
+import com.ecommerce.enums.TipoCliente;
+import com.ecommerce.model.*;
 import com.ecommerce.repository.CidadeRepository;
+import com.ecommerce.repository.ClienteRepository;
+import com.ecommerce.repository.EnderecoRepository;
 import com.ecommerce.repository.EstadoRepository;
 import com.ecommerce.service.CategoriaService;
 import com.ecommerce.service.ProdutoService;
@@ -38,9 +38,12 @@ class DataLoader implements CommandLineRunner {
 	ProdutoService produtoService;
 	@Autowired
 	EstadoRepository estadoRepository;
-
 	@Autowired
 	CidadeRepository cidadeRepository;
+	@Autowired
+	ClienteRepository clienteRepository;
+	@Autowired
+	EnderecoRepository enderecoRepository;
 
     DataLoader(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
@@ -76,7 +79,17 @@ class DataLoader implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(estado1,estado2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
 
+		Cliente cliente1 = new Cliente("Maria Silva","maria@gmail","2305262362", TipoCliente.PESSOAFISICA);
+		cliente1.getCelulares().add("31971782909");
+		cliente1.getCelulares().add("31243124112");
 
+		Endereco endereco1 = new Endereco("rua serra das pedras ","300","casa","serra dourada","33202570",cliente1,c1);
+		Endereco endereco2 = new Endereco("AV matos","512","apt 120","Gavea 2","123570",cliente1,c2);
+
+		clienteRepository.save(cliente1);
+		enderecoRepository.saveAll(Arrays.asList(endereco2,endereco1));
+
+		System.out.println(cliente1.getTipo());
 
 	}
 }
