@@ -26,6 +26,10 @@ public class Categoria {
     public Categoria() {
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Categoria(String nome) {
         this.nome = nome;
     }
@@ -44,6 +48,10 @@ public class Categoria {
         if (o == null || getClass() != o.getClass()) return false;
         Categoria categoria = (Categoria) o;
         return Objects.equals(id, categoria.id) && Objects.equals(nome, categoria.nome);
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override

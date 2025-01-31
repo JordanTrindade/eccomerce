@@ -1,11 +1,9 @@
 package com.ecommerce;
 
+import com.ecommerce.enums.EstadoPagamento;
 import com.ecommerce.enums.TipoCliente;
 import com.ecommerce.model.*;
-import com.ecommerce.repository.CidadeRepository;
-import com.ecommerce.repository.ClienteRepository;
-import com.ecommerce.repository.EnderecoRepository;
-import com.ecommerce.repository.EstadoRepository;
+import com.ecommerce.repository.*;
 import com.ecommerce.service.CategoriaService;
 import com.ecommerce.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +46,11 @@ class DataLoader implements CommandLineRunner {
 	ClienteRepository clienteRepository;
 	@Autowired
 	EnderecoRepository enderecoRepository;
+	@Autowired
+	PedidoRepository pedidoRepository;
+	@Autowired
+	PagamentoRepository pagamentoRepository;
+
 
     DataLoader(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
@@ -89,7 +96,27 @@ class DataLoader implements CommandLineRunner {
 		clienteRepository.save(cliente1);
 		enderecoRepository.saveAll(Arrays.asList(endereco2,endereco1));
 
-		System.out.println(cliente1.getTipo());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+
+		LocalDateTime dataPedido = LocalDateTime.now();
+		LocalDate dateVencimento = LocalDate.now().plusDays(2);
+
+		Pedido ped1 = new Pedido(dataPedido, cliente1, endereco1);
+		Pedido ped2 = new Pedido(dataPedido, cliente1, endereco2);
+
+		cliente1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+
+		Pagamento pagto1 = new PagamentoComCartao(EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+
+		Pagamento pagto2 = new PagamentoComBoleto(EstadoPagamento.PENDENTE, ped2,dateVencimento , null);
+		ped2.setPagamento(pagto2);
+
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+
+
 
 	}
 }

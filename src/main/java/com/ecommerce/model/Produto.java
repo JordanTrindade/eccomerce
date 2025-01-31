@@ -21,6 +21,10 @@ public class Produto {
     @JsonIgnore
     private List<Categoria> categorias = new ArrayList<>();
 
+
+    @ManyToMany(mappedBy = "produtos", fetch = FetchType.LAZY)
+    private List<Pedido> pedidos = new ArrayList<>();
+
     public Produto() {}
 
     public Produto(String nome, Double preco) {
@@ -28,7 +32,25 @@ public class Produto {
         this.nome = nome;
         this.preco = preco;
     }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
     public Integer getId() {
         return id;
     }
